@@ -1,0 +1,41 @@
+{
+  "Common": {
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "loading": "กำลังโหลด...",
+    "toggleTheme": "เปลี่ยนธีม"
+  },
+  "Auth": {
+    "loginTitle": "เข้าสู่ระบบ",
+    "registerTitle": "สร้างบัญชีใหม่",
+    "username": "ชื่อผู้ใช้",
+    "login": "เข้าสู่ระบบ",
+    "logout": "ออกจากระบบ"
+  },
+  "Dashboard": {
+    "totalBalance": "ยอดเงินรวม",
+    "income": "รายรับ",
+    "expense": "รายจ่าย"
+  },
+  "Playground": {
+    "title": "พื้นที่ทดสอบ UI",
+    "globalComponents": "คอมโพเนนต์ส่วนกลาง",
+    "designSheet": "ดีไซน์ชีท",
+    "modals": "โมดอล",
+    "loader": "ตัวโหลด",
+    "toasts": "แจ้งเตือน",
+    "uiState": "สถานะ UI",
+    "theme": "ธีม",
+    "openInfoModal": "เปิด Info Modal",
+    "openConfirmModal": "เปิด Confirm Modal",
+    "openCustomModal": "เปิด Custom Modal",
+    "showGlobalLoader": "แสดง Global Loader (2วิ)",
+    "showSuccess": "แสดง Success",
+    "showError": "แสดง Error",
+    "showInfo": "แสดง Info",
+    "toggleSidebar": "สลับ Sidebar",
+    "current": "ปัจจุบัน",
+    "open": "เปิด",
+    "closed": "ปิด"
+  }
+}

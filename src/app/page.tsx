@@ -5,5 +5,5 @@ export default function Home() {
         <h1>Blank Page</h1>
       </main>
     </div>
-  );
+  )
 }

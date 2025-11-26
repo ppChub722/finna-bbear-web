@@ -1,0 +1,41 @@
+{
+  "Common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "toggleTheme": "Toggle Theme"
+  },
+  "Auth": {
+    "loginTitle": "Login",
+    "registerTitle": "Register",
+    "username": "Username",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "Dashboard": {
+    "totalBalance": "Total Balance",
+    "income": "Income",
+    "expense": "Expense"
+  },
+  "Playground": {
+    "title": "Global UI Playground",
+    "globalComponents": "Global Components",
+    "designSheet": "Design Sheet",
+    "modals": "Modals",
+    "loader": "Loader",
+    "toasts": "Toasts",
+    "uiState": "UI State",
+    "theme": "Theme",
+    "openInfoModal": "Open Info Modal",
+    "openConfirmModal": "Open Confirm Modal",
+    "openCustomModal": "Open Custom Modal",
+    "showGlobalLoader": "Show Global Loader (2s)",
+    "showSuccess": "Show Success",
+    "showError": "Show Error",
+    "showInfo": "Show Info",
+    "toggleSidebar": "Toggle Sidebar",
+    "current": "Current",
+    "open": "Open",
+    "closed": "Closed"
+  }
+}

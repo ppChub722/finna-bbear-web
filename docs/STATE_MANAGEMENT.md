@@ -5,8 +5,8 @@ This document establishes the **Client-Side State** management standards for the
 ## 1. Philosophy
 
 1.  **Internal vs Public:** Separate the "Store" (Storage) from the "Hook" (Access Method).
-    *   ❌ **Don't:** Call `useStore` directly in UI Components.
-    *   ✅ **Do:** Always call via a Custom Hook (Facade).
+    - ❌ **Don't:** Call `useStore` directly in UI Components.
+    - ✅ **Do:** Always call via a Custom Hook (Facade).
 2.  **Server First:** Main data (Business Data) should be fetched via Server Components. Zustand data is used for **UI State** (e.g., Menu Open/Close, Modal) or **Global Client Session** only.
 3.  **Modular:** Separate Stores by Feature (e.g., `useUIStore`, `useSocialStore`), do not combine everything in one place.
 
@@ -33,49 +33,50 @@ When adding a new State, follow these 3 steps:
 ### Step 1: Create the Store (Internal)
 
 Create a file in `src/store/` starting with `use...Store.ts`.
-*Clearly define the Type of State and Actions.*
+_Clearly define the Type of State and Actions._
 
 ```typescript
 // src/store/useUIStore.ts
-import { create } from 'zustand';
+import { create } from 'zustand'
 
 interface UIState {
-  isSidebarOpen: boolean;
-  isLoading: boolean;
-  
+  isSidebarOpen: boolean
+  isLoading: boolean
+
   // Actions
-  toggleSidebar: () => void;
-  setLoading: (status: boolean) => void;
+  toggleSidebar: () => void
+  setLoading: (status: boolean) => void
 }
 
 export const useUIStore = create<UIState>((set) => ({
   isSidebarOpen: false,
   isLoading: false,
-  
-  toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
+
+  toggleSidebar: () =>
+    set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
   setLoading: (status) => set({ isLoading: status }),
-}));
+}))
 ```
 
 ### Step 2: Create the Facade Hook (Public)
 
 Create a file in `src/hooks/` starting with `use...ts`.
-*This Hook collects State and Logic before sending it to the Component.*
+_This Hook collects State and Logic before sending it to the Component._
 
 ```typescript
 // src/hooks/useUI.ts
-import { useUIStore } from "@/store/useUIStore";
+import { useUIStore } from '@/store/useUIStore'
 
 export function useUI() {
   // Select state (For better performance than fetching the whole object)
-  const isSidebarOpen = useUIStore((state) => state.isSidebarOpen);
-  const isLoading = useUIStore((state) => state.isLoading);
-  const toggleSidebar = useUIStore((state) => state.toggleSidebar);
-  const setLoading = useUIStore((state) => state.setLoading);
+  const isSidebarOpen = useUIStore((state) => state.isSidebarOpen)
+  const isLoading = useUIStore((state) => state.isLoading)
+  const toggleSidebar = useUIStore((state) => state.toggleSidebar)
+  const setLoading = useUIStore((state) => state.setLoading)
 
   // Custom Logic can be added here (e.g., Logging button clicks)
   const closeSidebar = () => {
-      if(isSidebarOpen) toggleSidebar();
+    if (isSidebarOpen) toggleSidebar()
   }
 
   return {
@@ -83,8 +84,8 @@ export function useUI() {
     isLoading,
     toggleSidebar,
     closeSidebar, // Export the processed function
-    setLoading
-  };
+    setLoading,
+  }
 }
 ```
 
@@ -94,20 +95,20 @@ Call only via Custom Hook, making the Code clean and readable.
 
 ```tsx
 // src/components/layout/Header.tsx
-'use client';
+'use client'
 
-import { useUI } from "@/hooks/useUI"; // Import from hooks, NOT store
+import { useUI } from '@/hooks/useUI' // Import from hooks, NOT store
 
 export default function Header() {
-  const { toggleSidebar, isLoading } = useUI();
+  const { toggleSidebar, isLoading } = useUI()
 
   return (
     <header>
       <button onClick={toggleSidebar}>
-        {isLoading ? "Loading..." : "Menu"}
+        {isLoading ? 'Loading...' : 'Menu'}
       </button>
     </header>
-  );
+  )
 }
 ```
 
@@ -117,17 +118,17 @@ In some cases (e.g., API Utilities, Event Listeners), we need to access State wi
 
 ```typescript
 // src/lib/api-client.ts (Example)
-import { useUIStore } from "@/store/useUIStore";
+import { useUIStore } from '@/store/useUIStore'
 
 async function fetchData() {
   // 1. Start Loading (Call Action directly)
-  useUIStore.getState().setLoading(true);
+  useUIStore.getState().setLoading(true)
 
   try {
-    await fetch('...');
+    await fetch('...')
   } finally {
     // 2. Stop Loading
-    useUIStore.getState().setLoading(false);
+    useUIStore.getState().setLoading(false)
   }
 }
 ```
@@ -144,8 +145,8 @@ When starting to develop a new Module (e.g., Social Splitting), use the same Pat
 ## 6. Rules for AI Agent 🤖
 
 1.  **Naming Convention:**
-      * Store files MUST end with `Store.ts` (e.g., `useCartStore.ts`).
-      * Hook files MUST NOT have `Store` in the name (e.g., `useCart.ts`).
+    - Store files MUST end with `Store.ts` (e.g., `useCartStore.ts`).
+    - Hook files MUST NOT have `Store` in the name (e.g., `useCart.ts`).
 2.  **No Direct Import:** Never import generic stores directly into UI components. Always create a facade hook first.
 3.  **Type Safety:** Always define TypeScript interfaces for State and Actions.
-4.  **Keep it Light:** Do not store large datasets (like 1,000 transactions) in Zustand if not necessary. Use Server State (React Query / Server Components) for data fetching. Use Zustand for *client-side interactivity*.
+4.  **Keep it Light:** Do not store large datasets (like 1,000 transactions) in Zustand if not necessary. Use Server State (React Query / Server Components) for data fetching. Use Zustand for _client-side interactivity_.

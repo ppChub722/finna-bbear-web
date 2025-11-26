@@ -58,17 +58,17 @@ In Next.js 16, we avoid using `useEffect` for data fetching in Client Components
 
 ```tsx
 // src/app/(dashboard)/page.tsx
-import { getSummary } from "@/actions/accounting";
+import { getSummary } from '@/actions/accounting'
 
 export default async function DashboardPage() {
   // Fetch data on Server (Go Backend) before rendering HTML
-  const summary = await getSummary(); 
+  const summary = await getSummary()
 
   return (
     <main>
       <SummaryCard data={summary} />
     </main>
-  );
+  )
 }
 ```
 
@@ -86,12 +86,15 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export async function loginAction(formData: FormData) {
-  const username = formData.get('username')
-  // ... Call Go Backend ...
-  
-  // Set Cookie on Next.js Server side (Safer than Client)
-  (await cookies()).set('token', '...', { httpOnly: true })
-  
+  const username = formData
+    .get('username')(
+      // ... Call Go Backend ...
+
+      // Set Cookie on Next.js Server side (Safer than Client)
+      await cookies()
+    )
+    .set('token', '...', { httpOnly: true })
+
   redirect('/dashboard')
 }
 ```
@@ -102,38 +105,38 @@ For organization and centralized token management, we should create a Wrapper fo
 
 ```tsx
 // src/lib/dal.ts (Data Access Layer)
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers'
 
-const GO_API_URL = process.env.NEXT_PUBLIC_API_URL;
+const GO_API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export async function fetchGoAPI(path: string, options: RequestInit = {}) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
+  const cookieStore = await cookies()
+  const token = cookieStore.get('token')?.value
 
   const headers = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     ...(token && { Authorization: `Bearer ${token}` }),
     ...options.headers,
-  };
+  }
 
   const res = await fetch(`${GO_API_URL}${path}`, {
     ...options,
     headers,
     // Next.js 15+ caching defaults need careful handling
-    cache: options.cache || "no-store", 
-  });
+    cache: options.cache || 'no-store',
+  })
 
   if (!res.ok) {
-    throw new Error(`API Error: ${res.statusText}`);
+    throw new Error(`API Error: ${res.statusText}`)
   }
 
-  return res.json();
+  return res.json()
 }
 ```
 
 ## 3. Design System & Layout (Mobile First)
 
-*(Logic remains the same, but Code Style updated for Modern React)*
+_(Logic remains the same, but Code Style updated for Modern React)_
 
 ### `src/app/globals.css` (Updated)
 

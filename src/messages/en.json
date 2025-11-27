@@ -7,7 +7,9 @@
   },
   "Auth": {
     "loginTitle": "Login",
+    "loginDescription": "Enter your credentials to access your account.",
     "registerTitle": "Create Account",
+    "registerDescription": "Enter your details to create a new account.",
     "username": "Username",
     "email": "Email",
     "password": "Password",
@@ -18,7 +20,8 @@
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
     "submitLogin": "Sign In",
-    "submitRegister": "Sign Up"
+    "submitRegister": "Sign Up",
+    "loading": "Loading..."
   },
   "Dashboard": {
     "totalBalance": "Total Balance",

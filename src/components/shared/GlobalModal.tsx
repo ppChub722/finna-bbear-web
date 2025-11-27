@@ -9,8 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { VisuallyHidden } from '@/components/ui/visually-hidden'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
+import { Loader2 } from 'lucide-react'
 
 export function GlobalModal() {
   const {
@@ -25,37 +27,72 @@ export function GlobalModal() {
     onConfirm,
     onCancel,
     closeModal,
+    authView,
   } = useModalStore()
 
   const [isLoading, setIsLoading] = useState(false)
+
+  if (authView) return null
 
   const handleConfirm = async () => {
     if (onConfirm) {
       setIsLoading(true)
       try {
-        await onConfirm()
+        // Support both async and sync callbacks
+        const result = onConfirm()
+
+        // Check if it's a Promise (async function)
+        if (result instanceof Promise) {
+          await result
+        }
+
         closeModal()
       } catch (error) {
         console.error('Modal confirm error:', error)
+        // Don't close modal on error, let user retry or cancel
       } finally {
         setIsLoading(false)
       }
     } else {
+      // No callback, just close
+      closeModal()
+    }
+  }
+
+  const handleCancel = () => {
+    if (!isLoading) {
+      if (onCancel) {
+        try {
+          onCancel()
+        } catch (error) {
+          console.error('Modal cancel error:', error)
+        }
+      }
       closeModal()
     }
   }
 
   const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      if (onCancel) onCancel()
-      closeModal()
+    if (!open && !isLoading) {
+      handleCancel()
     }
   }
 
   if (type === 'custom') {
     return (
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent>{content}</DialogContent>
+        <DialogContent>
+          <DialogHeader>
+            {title ? (
+              <DialogTitle>{title}</DialogTitle>
+            ) : (
+              <VisuallyHidden>
+                <DialogTitle>Modal</DialogTitle>
+              </VisuallyHidden>
+            )}
+          </DialogHeader>
+          {content}
+        </DialogContent>
       </Dialog>
     )
   }
@@ -72,7 +109,7 @@ export function GlobalModal() {
           {type === 'confirm' && (
             <Button
               variant="outline"
-              onClick={() => handleOpenChange(false)}
+              onClick={handleCancel}
               disabled={isLoading}
             >
               {cancelText}
@@ -83,6 +120,7 @@ export function GlobalModal() {
             onClick={handleConfirm}
             disabled={isLoading}
           >
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {isLoading ? 'Loading...' : confirmText}
           </Button>
         </DialogFooter>

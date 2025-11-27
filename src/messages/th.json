@@ -7,7 +7,9 @@
   },
   "Auth": {
     "loginTitle": "เข้าสู่ระบบ",
+    "loginDescription": "กรอกข้อมูลเพื่อเข้าสู่ระบบ",
     "registerTitle": "สร้างบัญชีใหม่",
+    "registerDescription": "กรอกข้อมูลเพื่อสร้างบัญชีใหม่",
     "username": "ชื่อผู้ใช้",
     "email": "อีเมล",
     "password": "รหัสผ่าน",
@@ -18,7 +20,8 @@
     "noAccount": "ยังไม่มีบัญชี?",
     "hasAccount": "มีบัญชีอยู่แล้ว?",
     "submitLogin": "เข้าสู่ระบบ",
-    "submitRegister": "สมัครสมาชิก"
+    "submitRegister": "สมัครสมาชิก",
+    "loading": "กำลังโหลด..."
   },
   "Dashboard": {
     "totalBalance": "ยอดเงินรวม",

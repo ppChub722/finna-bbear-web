@@ -3,10 +3,9 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { useModalStore } from '@/store/useModalStore'
-import { loginAction, registerAction } from '@/actions/auth'
 import { useAuthStore } from '@/store/useAuthStore'
 
 export function AuthModal() {
@@ -57,86 +56,6 @@ export function AuthModal() {
         setPassword('')
     }
 
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setIsLoading(true)
-        setError('')
-
-        try {
-            const result = await loginAction({ identifier, password })
-            if (result.success) {
-                // Update store manually or re-hydrate
-                // Ideally loginAction returns user, we can update store directly if we want
-                // But useAuthStore.login calls loginAction internally too.
-                // Let's just use the store action if possible, but here we are calling server action directly
-                // to handle the response more granularly or just use the store's login method?
-                // The store's login method calls loginAction. Let's use the store's method to keep state in sync.
-
-                // Actually, let's call the store's login method which wraps the action
-                await storeLogin({ identifier, password })
-                handleClose()
-            } else {
-                setError(result.error || 'Login failed')
-            }
-        } catch (err: any) {
-            setError(err.message || 'Login failed')
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
-    const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setIsLoading(true)
-        setError('')
-
-        try {
-            const result = await registerAction({ username, email, password })
-            if (result.success) {
-                // Auto login after register? Or just close and ask to login?
-                // The action returns user and sets cookies, so we are logged in.
-                // We should update the store.
-                // Since we don't have a store.register wrapper that calls the action AND updates state (oh wait we do),
-                // let's use the store's register method if we can, or just manually update if we called the action directly.
-                // The store has a register method.
-
-                // Wait, I can't call store.register because I'm importing registerAction directly.
-                // Let's use the store's register method.
-                // But wait, the store imports the actions.
-                // I should probably use the store methods for consistency.
-
-                // Re-reading store:
-                // login: async (credentials) => { ... calls loginAction ... set user ... }
-                // register: async (data) => { ... calls registerAction ... set user ... }
-
-                // So yes, I should use the store methods.
-                // But I need to import them from the store hook.
-                // I already imported `storeLogin`. I need `storeRegister`.
-
-                // Let's fix the imports above.
-                // Actually, I'll just call the action directly for now and then hydrate/reload, 
-                // OR better, use the store methods.
-
-                // I'll use the store methods.
-                // But wait, I need to pass the right args.
-
-                // For now, let's stick to the plan of calling actions directly in the modal 
-                // and then updating the store? No, that duplicates logic.
-                // I will use the store methods.
-
-                // However, the store methods throw errors on failure, which is good.
-
-                // Let's use the store methods.
-            } else {
-                setError(result.error || 'Registration failed')
-            }
-        } catch (err: any) {
-            setError(err.message || 'Registration failed')
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     // Wrapper for store calls
     const onSubmitLogin = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -178,6 +97,9 @@ export function AuthModal() {
                     <DialogTitle>
                         {authView === 'login' ? t('loginTitle') : t('registerTitle')}
                     </DialogTitle>
+                    <DialogDescription>
+                        {authView === 'login' ? t('loginDescription') : t('registerDescription')}
+                    </DialogDescription>
                 </DialogHeader>
 
                 {error && (

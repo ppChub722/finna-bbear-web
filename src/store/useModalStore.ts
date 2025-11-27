@@ -40,7 +40,7 @@ export const useModalStore = create<ModalStore>((set) => ({
   ...initialState,
   authView: null,
 
-  openModal: (state) => set({ ...state, isOpen: true }),
+  openModal: (state) => set({ ...initialState, ...state, isOpen: true }),
   closeModal: () => set({ ...initialState, authView: null }), // Also reset auth view on close
 
   setAuthView: (view) => set({ authView: view }),

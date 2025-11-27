@@ -8,6 +8,7 @@ import { Sun, Moon } from 'lucide-react'
 import { useThemeStore } from '@/store/useThemeStore'
 import { useModalStore } from '@/store/useModalStore'
 import { useAuthStore } from '@/store/useAuthStore'
+import { useAuth } from '@/hooks/useAuth'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
@@ -19,6 +20,9 @@ export default function PlaygroundPage() {
   const tCommon = useTranslations('Common')
   const tAuth = useTranslations('Auth')
   const router = useRouter()
+
+  // Initialize auth and trigger hydration
+  useAuth()
 
   const changeLanguage = (locale: string) => {
     document.cookie = `finna_locale=${locale}; path=/; max-age=31536000; SameSite=Lax`

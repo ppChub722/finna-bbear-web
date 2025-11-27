@@ -21,7 +21,12 @@ export async function loginAction(formData: any) {
         }
 
         const data = await res.json()
-        const { accessToken, refreshToken, user } = data
+        console.log('Login response data:', data)
+
+        // Backend returns: { success, message, data: { token, user } }
+        const { token, user } = data.data
+        const accessToken = token
+        const refreshToken = null // Backend doesn't provide refresh token yet
 
         const cookieStore = await cookies()
 
@@ -73,7 +78,12 @@ export async function registerAction(formData: any) {
         }
 
         const data = await res.json()
-        const { accessToken, refreshToken, user } = data
+        console.log('Register response data:', data)
+
+        // Backend returns: { success, message, data: { token, user } }
+        const { token, user } = data.data
+        const accessToken = token
+        const refreshToken = null // Backend doesn't provide refresh token yet
 
         const cookieStore = await cookies()
 
@@ -113,4 +123,35 @@ export async function logoutAction() {
     cookieStore.delete('refreshToken')
     cookieStore.delete('userData')
     return { success: true }
+}
+
+export async function getMeAction() {
+    try {
+        const cookieStore = await cookies()
+        const accessToken = cookieStore.get('accessToken')?.value
+
+        if (!accessToken) {
+            return { success: false, error: 'No access token found' }
+        }
+
+        const res = await fetch(`${API_URL}/me`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        })
+
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}))
+            return { success: false, error: errorData.message || 'Failed to fetch user data' }
+        }
+
+        const data = await res.json()
+        console.log('Get Me response data:', data)
+
+        return { success: true, data }
+    } catch (error) {
+        console.error('Get Me Action Error:', error)
+        return { success: false, error: 'Network error or server unavailable' }
+    }
 }

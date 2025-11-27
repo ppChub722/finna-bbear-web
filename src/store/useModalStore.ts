@@ -19,6 +19,10 @@ export interface ModalState {
 interface ModalStore extends ModalState {
   openModal: (state: Omit<ModalState, 'isOpen'>) => void
   closeModal: () => void
+
+  // Auth Modal State
+  authView: 'login' | 'register' | null
+  setAuthView: (view: 'login' | 'register' | null) => void
 }
 
 const initialState: ModalState = {
@@ -34,6 +38,10 @@ const initialState: ModalState = {
 
 export const useModalStore = create<ModalStore>((set) => ({
   ...initialState,
+  authView: null,
+
   openModal: (state) => set({ ...state, isOpen: true }),
-  closeModal: () => set({ ...initialState }),
+  closeModal: () => set({ ...initialState, authView: null }), // Also reset auth view on close
+
+  setAuthView: (view) => set({ authView: view }),
 }))

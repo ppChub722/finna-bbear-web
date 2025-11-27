@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { ThemeInjector } from '@/components/shared/ThemeInjector'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getLocale } from 'next-intl/server'
+import { AuthModal } from '@/components/auth/AuthModal'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const notoSansThai = Noto_Sans_Thai({
@@ -39,6 +40,7 @@ export default async function RootLayout({
           {children}
           <Toaster />
           <GlobalModal />
+          <AuthModal />
           <GlobalLoader />
           <ThemeInjector />
         </NextIntlClientProvider>

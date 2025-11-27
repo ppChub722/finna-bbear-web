@@ -9,8 +9,16 @@
     "loginTitle": "เข้าสู่ระบบ",
     "registerTitle": "สร้างบัญชีใหม่",
     "username": "ชื่อผู้ใช้",
+    "email": "อีเมล",
+    "password": "รหัสผ่าน",
+    "identifier": "ชื่อผู้ใช้ หรือ อีเมล",
     "login": "เข้าสู่ระบบ",
-    "logout": "ออกจากระบบ"
+    "register": "ลงทะเบียน",
+    "logout": "ออกจากระบบ",
+    "noAccount": "ยังไม่มีบัญชี?",
+    "hasAccount": "มีบัญชีอยู่แล้ว?",
+    "submitLogin": "เข้าสู่ระบบ",
+    "submitRegister": "สมัครสมาชิก"
   },
   "Dashboard": {
     "totalBalance": "ยอดเงินรวม",

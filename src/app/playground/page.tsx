@@ -6,6 +6,8 @@ import { GlobalComponentsView } from '@/app/playground/components/GlobalComponen
 import { DesignSheetView } from '@/app/playground/components/DesignSheetView'
 import { Sun, Moon } from 'lucide-react'
 import { useThemeStore } from '@/store/useThemeStore'
+import { useModalStore } from '@/store/useModalStore'
+import { useAuthStore } from '@/store/useAuthStore'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
@@ -15,6 +17,7 @@ export default function PlaygroundPage() {
   const [activeView, setActiveView] = useState<View>('global')
   const t = useTranslations('Playground')
   const tCommon = useTranslations('Common')
+  const tAuth = useTranslations('Auth')
   const router = useRouter()
 
   const changeLanguage = (locale: string) => {
@@ -49,6 +52,31 @@ export default function PlaygroundPage() {
           </Button>
         </nav>
         <div className="mt-auto space-y-4 border-t pt-4">
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-muted-foreground">Auth</h3>
+            <div className="flex flex-col gap-2">
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => {
+                  useModalStore.getState().setAuthView('login')
+                  useModalStore.getState().openModal({ type: 'custom' })
+                }}
+              >
+                {tAuth('login')}
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={async () => {
+                  await useAuthStore.getState().logout()
+                }}
+              >
+                {tAuth('logout')}
+              </Button>
+            </div>
+          </div>
+
           <Button
             variant="ghost"
             className="w-full justify-start gap-2"

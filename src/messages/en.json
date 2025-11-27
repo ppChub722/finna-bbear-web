@@ -7,10 +7,18 @@
   },
   "Auth": {
     "loginTitle": "Login",
-    "registerTitle": "Register",
+    "registerTitle": "Create Account",
     "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "identifier": "Username or Email",
     "login": "Login",
-    "logout": "Logout"
+    "register": "Register",
+    "logout": "Logout",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "submitLogin": "Sign In",
+    "submitRegister": "Sign Up"
   },
   "Dashboard": {
     "totalBalance": "Total Balance",
